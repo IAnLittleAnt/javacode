@@ -18,9 +18,13 @@ public class HelloApplication {
 
         //打印项目路径
         log.info("******************************************");
+        // 环境
         Environment env = application.getEnvironment();
+        // ip地址
         String ip = InetAddress.getLocalHost().getHostAddress();
+        // 端口
         String port = env.getProperty("server.port");
+        // 路径
         String path = env.getProperty("server.servlet.context-path");
         if (StringUtils.isEmpty(path)) {
             path = "";
