@@ -1,10 +1,12 @@
 package com.mond.springboot.helloworld.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+
+@RestController
+// 要使用RestController才能返回非json的数据
 @RequestMapping("/hello")
 public class HelloWorldController {
     @GetMapping("/hi")
