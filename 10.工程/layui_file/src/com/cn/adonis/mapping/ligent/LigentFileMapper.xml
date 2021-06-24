@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.ligent.LigentFileDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="LigentFile" type="com.cn.adonis.entity.ligent.LigentFile">
+		<id column="fileID" property="fileId" jdbcType="BIGINT" />
+		<result column="fileUse" property="fileUse" jdbcType="VARCHAR" />
+		<result column="typeID" property="typeId" jdbcType="INTEGER" />
+		<result column="fileTitle" property="fileTitle" jdbcType="VARCHAR" />
+		<result column="filePath" property="filePath" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="createUserID" property="createUserId" jdbcType="BIGINT" />
+		<result column="isValid" property="isValid" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="TableName"> t_ligent_file </sql>
+	
+	<!-- 新增文件信息 -->
+	<select id="insertFile" resultMap="LigentFile" parameterType="com.cn.adonis.entity.ligent.LigentFile">
+		{
+			call p_ligent_file_insert(
+					#{fileUse,jdbcType=VARCHAR,mode=IN}, 
+					#{fileTitle,jdbcType=VARCHAR,mode=IN}, 
+					#{filePath,jdbcType=VARCHAR,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+</mapper>

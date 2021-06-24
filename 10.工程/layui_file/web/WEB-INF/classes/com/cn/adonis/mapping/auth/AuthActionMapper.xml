@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.auth.AuthActionDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 按钮信息对象 -->
+	<resultMap id="AuthAction" type="com.cn.adonis.entity.auth.AuthAction">
+		<id column="actionID" property="actionId" jdbcType="BIGINT" />
+		<result column="menuID" property="menuId" jdbcType="BIGINT" />
+		<result column="actionName" property="actionName" jdbcType="VARCHAR" />
+		<result column="actionType" property="actionType" jdbcType="INTEGER" />
+		<result column="actionSeat" property="actionSeat" jdbcType="INTEGER" />
+		<result column="callType" property="callType" jdbcType="INTEGER" />
+		<result column="actionEvent" property="actionEvent" jdbcType="VARCHAR" />
+		<result column="actionIcon" property="actionIcon" jdbcType="VARCHAR" />
+		<result column="actionSort" property="actionSort" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="createUserID" property="createUserId" jdbcType="BIGINT" />
+		<result column="isValid" property="isValid" jdbcType="INTEGER" />
+		
+		<result column="menuName" property="menuName" jdbcType="VARCHAR" />
+		<result column="typeName" property="typeName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="TableName"> t_auth_action </sql>
+	
+	<!-- 根据编号获取按钮信息 -->
+	<select id="fainById" resultMap="AuthAction" parameterType="java.lang.Long">
+		{
+			call p_auth_action_fainById(
+					#{actionId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根据菜单获取按钮信息 -->
+	<select id="findByMenu" resultMap="AuthAction" parameterType="java.lang.Long">
+		{
+			call p_auth_action_findByMenu(
+					#{menuId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根据用户获取按钮列表 -->
+	<select id="findByUser" resultMap="AuthAction" parameterType="com.cn.adonis.entity.auth.AuthMenu">
+		{
+			call p_auth_action_findByUser(
+					#{createUserId,jdbcType=BIGINT,mode=IN}, 
+					#{menuPath,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根据权限获取按钮列表 -->
+	<select id="findByPower" resultMap="AuthAction" parameterType="com.cn.adonis.entity.auth.AuthAction">
+		{
+			call p_auth_action_findByPower(
+					#{createUserId,jdbcType=BIGINT,mode=IN}, 
+					#{menuId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 新增按钮信息 -->
+	<select id="insertAction" resultMap="AuthAction" parameterType="com.cn.adonis.entity.auth.AuthAction">
+		{
+			call p_auth_action_insert(
+					#{menuId,jdbcType=BIGINT,mode=IN}, 
+					#{actionName,jdbcType=VARCHAR,mode=IN}, 
+					#{actionType,jdbcType=BIGINT,mode=IN}, 
+					#{actionSeat,jdbcType=INTEGER,mode=IN}, 
+					#{callType,jdbcType=INTEGER,mode=IN}, 
+					#{actionEvent,jdbcType=VARCHAR,mode=IN}, 
+					#{actionIcon,jdbcType=VARCHAR,mode=IN}, 
+					#{actionSort,jdbcType=INTEGER,mode=IN}, 
+					#{content,jdbcType=VARCHAR,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 编辑按钮信息 -->
+	<select id="updateAction" resultMap="AuthAction" parameterType="com.cn.adonis.entity.auth.AuthAction">
+		{
+			call p_auth_action_update(
+					#{actionId,jdbcType=BIGINT,mode=IN}, 
+					#{actionName,jdbcType=VARCHAR,mode=IN}, 
+					#{actionType,jdbcType=BIGINT,mode=IN}, 
+					#{actionSeat,jdbcType=INTEGER,mode=IN}, 
+					#{callType,jdbcType=INTEGER,mode=IN}, 
+					#{actionEvent,jdbcType=VARCHAR,mode=IN}, 
+					#{actionIcon,jdbcType=VARCHAR,mode=IN}, 
+					#{actionSort,jdbcType=INTEGER,mode=IN}, 
+					#{content,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 编辑按钮图标 -->
+	<select id="updateIcon" resultMap="AuthAction" parameterType="com.cn.adonis.entity.auth.AuthAction">
+		{
+			call p_auth_action_updateIcon(
+					#{actionId,jdbcType=BIGINT,mode=IN}, 
+					#{actionIcon,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 删除按钮信息 -->
+	<select id="deleteAction" resultMap="StateModel" parameterType="java.lang.Long">
+		{
+			call p_auth_action_delete(
+					#{actionId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+</mapper>

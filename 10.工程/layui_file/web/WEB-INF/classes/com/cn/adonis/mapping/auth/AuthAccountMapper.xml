@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.auth.AuthAccountDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 账号信息对象 -->
+	<resultMap id="AuthAccount" type="com.cn.adonis.entity.auth.AuthAccount">
+		<id column="accountID" property="accountId" jdbcType="BIGINT" />
+		<result column="userCode" property="userCode" jdbcType="VARCHAR" />
+		<result column="userPwd" property="userPwd" jdbcType="VARCHAR" />
+	   	<result column="userQQ" property="userQQ" jdbcType="VARCHAR"/>
+	   	<result column="userWechat" property="userWechat" jdbcType="VARCHAR"/>
+	   	<result column="userWeibo" property="userWeibo" jdbcType="VARCHAR"/>
+		<result column="isFrozen" property="isFrozen" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="TableName"> t_auth_account </sql>
+	
+	<!-- 根据账号获取账号信息 -->
+	<select id="fainByCode" resultMap="AuthAccount" parameterType="java.lang.String">
+		{
+			call p_auth_account_fainByCode(
+					#{userCode,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 用户登录 -->
+	<select id="login" resultMap="StateModel" parameterType="com.cn.adonis.entity.auth.AuthAccount">
+		{
+			call p_auth_account_login(
+					#{userCode,jdbcType=VARCHAR,mode=IN}, 
+					#{userPwd,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根原密码修改密码  -->
+	<select id="updatePwdByOld" resultMap="StateModel" parameterType="java.util.Map">
+		{
+			call p_auth_account_updatePwdByOld(
+					#{userId,jdbcType=BIGINT,mode=IN}, 
+					#{oldPwd,jdbcType=VARCHAR,mode=IN}, 
+					#{nowPwd,jdbcType=VARCHAR,mode=IN}, 
+					#{password,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.auth.AuthUserDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 用户信息对象 -->
+	<resultMap id="AuthUser" type="com.cn.adonis.entity.auth.AuthUser">
+		<id column="userID" property="userId" jdbcType="BIGINT" />
+		<result column="accountID" property="accountId" jdbcType="BIGINT" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="sign" property="sign" jdbcType="VARCHAR" />
+		<result column="degree" property="degree" jdbcType="VARCHAR" />
+		<result column="sexName" property="sexName" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="secretErrorCount" property="secretErrorCount" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="createUserID" property="createUserId" jdbcType="BIGINT" />
+		<result column="isValid" property="isValid" jdbcType="INTEGER" />
+		
+		<result column="userCode" property="userCode" jdbcType="VARCHAR" />
+		<result column="isFrozen" property="isFrozen" jdbcType="INTEGER" />
+		<result column="loginState" property="loginState" jdbcType="INTEGER" />
+		<result column="roleIds" property="roleIds" jdbcType="VARCHAR" />
+		<result column="roleNames" property="roleNames" jdbcType="VARCHAR" />
+		<result column="mailAccount" property="mailAccount" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="TableName"> t_auth_user </sql>
+	
+	
+	<!-- 分页获取用户信息 -->
+	<select id="findByPage" statementType="CALLABLE" resultMap="StateModel,AuthUser" parameterType="java.util.Map">
+		{
+			call p_auth_user_findByPage(
+					#{roleId,jdbcType=INTEGER,mode=IN}, 
+					#{searchKey,jdbcType=VARCHAR,mode=IN}, 
+					#{start,jdbcType=INTEGER,mode=IN}, 
+					#{limit,jdbcType=INTEGER,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 分页获取用户在线情况 -->
+	<select id="findByLogin" statementType="CALLABLE" resultMap="StateModel,AuthUser" parameterType="java.util.Map">
+		{
+			call p_auth_user_findByLogin(
+					#{roleId,jdbcType=INTEGER,mode=IN}, 
+					#{searchKey,jdbcType=VARCHAR,mode=IN}, 
+					#{start,jdbcType=INTEGER,mode=IN}, 
+					#{limit,jdbcType=INTEGER,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根据编号获取用户信息 -->
+	<select id="fainById" resultMap="AuthUser" parameterType="java.lang.Long">
+		{
+			call p_auth_user_fainById(
+					#{userId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 根据账号获取用户信息 -->
+	<select id="fainByAccount" resultMap="AuthUser" parameterType="java.lang.Long">
+		{
+			call p_auth_user_fainByAccount(
+					#{accountId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 添加好友-查找用户列表 -->
+	<select id="findBySearch" resultMap="AuthUser" parameterType="java.util.Map">
+		{
+			call p_auth_user_findBySearch(
+					#{userId,jdbcType=BIGINT,mode=IN}, 
+					#{roleId,jdbcType=BIGINT,mode=IN}, 
+					#{searchKey,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 新增用户信息 -->
+	<select id="insertUser" resultMap="StateModel" parameterType="com.cn.adonis.entity.auth.AuthUser">
+		{
+			call p_auth_user_insert(
+					#{userCode,jdbcType=VARCHAR,mode=IN}, 
+					#{userName,jdbcType=VARCHAR,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}, 
+					#{roleIds,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 编辑用户信息 -->
+	<select id="updateUser" resultMap="AuthUser" parameterType="com.cn.adonis.entity.auth.AuthUser">
+		{
+			call p_auth_user_update(
+					#{userId,jdbcType=BIGINT,mode=IN}, 
+					#{userName,jdbcType=VARCHAR,mode=IN}, 
+					#{roleIds,jdbcType=VARCHAR,mode=IN}, 
+					#{degree,jdbcType=VARCHAR,mode=IN}, 
+					#{sexName,jdbcType=VARCHAR,mode=IN}, 
+					#{address,jdbcType=VARCHAR,mode=IN}, 
+					#{description,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 编辑用户签名信息 -->
+	<select id="updateSign" resultMap="AuthUser" parameterType="com.cn.adonis.entity.auth.AuthUser">
+		{
+			call p_auth_user_updateSign(
+					#{userId,jdbcType=BIGINT,mode=IN}, 
+					#{sign,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 删除用户信息 -->
+	<select id="deleteUser" resultMap="StateModel" parameterType="java.lang.Long">
+		{
+			call p_auth_user_delete(
+					#{userId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.file.FileDocuDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 文件信息对象 -->
+	<resultMap id="FileDocu" type="com.cn.adonis.entity.file.FileDocu">
+		<id column="docuID" property="docuId" jdbcType="BIGINT" />
+		<result column="docuUse" property="docuUse" jdbcType="INTEGER" />
+		<result column="paterID" property="paterId" jdbcType="BIGINT" />
+		<result column="typeID" property="typeId" jdbcType="BIGINT" />
+		<result column="docuName" property="docuName" jdbcType="VARCHAR" />
+		<result column="docuPath" property="docuPath" jdbcType="VARCHAR" />
+		<result column="localPath" property="localPath" jdbcType="VARCHAR" />
+		<result column="docuSuffix" property="docuSuffix" jdbcType="VARCHAR" />
+		<result column="docuSize" property="docuSize" jdbcType="BIGINT" />
+		<result column="docuSizeUnit" property="docuSizeUnit" jdbcType="VARCHAR" />
+		<result column="childCount" property="childCount" jdbcType="INTEGER" />
+		<result column="downloadCount" property="downloadCount" jdbcType="INTEGER" />
+		<result column="docuDesc" property="docuDesc" jdbcType="VARCHAR" />
+		<result column="lastUpdateTime" property="lastUpdateTime" jdbcType="VARCHAR" />
+		<result column="lastUpdateUser" property="lastUpdateUser" jdbcType="BIGINT" />
+		<result column="createTime" property="createTime" jdbcType="VARCHAR" />
+		<result column="createUserID" property="createUserId" jdbcType="BIGINT" />
+		<result column="isValid" property="isValid" jdbcType="INTEGER" />
+		
+		<result column="typeIcon" property="typeIcon" jdbcType="VARCHAR" />
+		<result column="typeIcong" property="typeIcong" jdbcType="VARCHAR" />
+	   	<result column="browseMode" property="browseMode" jdbcType="INTEGER" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	
+	<!-- 根据编号获取文件信息 -->
+	<select id="fainById" resultMap="FileDocu" parameterType="java.lang.Long">
+		{
+			call p_file_docu_fainById(
+					#{docuId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 获取所有孩子节点 -->
+	<select id="findAllChild" resultMap="FileDocu" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_findAllChild(
+					#{docuId,jdbcType=BIGINT,mode=IN}, 
+					#{docuUse,jdbcType=INTEGER,mode=IN}, 
+					#{browseMode,jdbcType=INTEGER,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 获取所有父级节点 -->
+	<select id="findAllPater" resultMap="FileDocu" parameterType="java.lang.Long">
+		{
+			call p_file_docu_findAllPater(
+					#{docuId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 创建文件夹 -->
+	<select id="insertFolder" resultMap="FileDocu" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_insertFolder(
+					#{paterId,jdbcType=BIGINT,mode=IN}, 
+					#{docuUse,jdbcType=INTEGER,mode=IN}, 
+					#{docuName,jdbcType=VARCHAR,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 上传文件 -->
+	<select id="insertFile" resultMap="FileDocu" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_insertFile(
+					#{paterId,jdbcType=BIGINT,mode=IN}, 
+					#{docuUse,jdbcType=INTEGER,mode=IN}, 
+					#{docuName,jdbcType=VARCHAR,mode=IN}, 
+					#{docuPath,jdbcType=VARCHAR,mode=IN}, 
+					#{docuSuffix,jdbcType=VARCHAR,mode=IN}, 
+					#{docuSize,jdbcType=BIGINT,mode=IN}, 
+					#{docuSizeUnit,jdbcType=VARCHAR,mode=IN}, 
+					#{docuDesc,jdbcType=VARCHAR,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 文件重命名 -->
+	<select id="updateName" resultMap="FileDocu" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_updateName(
+					#{docuId,jdbcType=BIGINT,mode=IN}, 
+					#{docuName,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 文件描述内容 -->
+	<select id="updateDesc" resultMap="FileDocu" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_updateDesc(
+					#{docuId,jdbcType=BIGINT,mode=IN}, 
+					#{docuDesc,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 移动文件 -->
+	<select id="updatePater" resultMap="StateModel" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_updatePater(
+					#{docuId,jdbcType=BIGINT,mode=IN}, 
+					#{paterId,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 更新下载数量 -->
+	<select id="updateCount" resultMap="StateModel" parameterType="java.lang.String">
+		{
+			call p_file_docu_updateCount(
+					#{docuIds,jdbcType=VARCHAR,mode=IN}
+				)
+		}
+	</select>
+	
+	<!-- 删除文件 -->
+	<select id="deleteDocu" resultMap="StateModel" parameterType="com.cn.adonis.entity.file.FileDocu">
+		{
+			call p_file_docu_delete(
+					#{docuId,jdbcType=BIGINT,mode=IN}, 
+					#{createUserId,jdbcType=BIGINT,mode=IN}
+				)
+		}
+	</select>
+	
+</mapper>

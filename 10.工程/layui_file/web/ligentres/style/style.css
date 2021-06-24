@@ -1,0 +1,55 @@
+/* 鼠标 */
+.dactyl{ cursor: pointer; }
+/* 对齐 */
+.center { text-align: center; }
+.t_left { text-align: left; }
+.t_right { text-align: right; }
+/* 浮动 */
+.f_left { float: left; }
+.f_right { float: right; }
+/* 显示隐藏 */
+.hide { display: none; }
+.show { display: block; }
+/* 颜色 */
+.c_gray{ color: #858585; }
+.c_black{ color: #444; }
+.c_ccc{ color: #ccc; }
+.c_red{ color: red; }
+/* 弹框层 */
+.layui-modal{display: none;}
+.layui-modal .layui-card-body{padding: 15px;}
+.layui-layer-page .layui-unselect dl {max-height: 260px;}
+/* TABLE按钮工具 */
+#barTool{ display: none; }
+/* 提示框 */
+.layui-elem-quote{margin-top: 10px;}
+.toolButton{float: right; display: none;}
+/* 面包屑 */
+.rightButton{float: right; color: #428bca; cursor: pointer; margin-left: 12px;}
+.rightButton:hover{text-decoration: underline;}
+
+/* 表单 */
+.layui-form form{
+	padding: 18px;
+}
+.from-scale .layui-input-block{
+	width: 560px;
+}
+.from-scale .layui-layer-btn-{
+	float: left;
+}
+.must{
+	color: red;
+}
+
+/* 表格条件 */
+@media screen and (max-width: 1200px) {
+	.table-operate-btn .layui-inline{
+		width: 130px;
+	}
+} 
+@media screen and (min-width: 1200px) {
+	.table-operate-btn .layui-inline{
+		width: 156px;
+	}
+} 

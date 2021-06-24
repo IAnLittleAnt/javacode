@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.adonis.dao.file.FileTypeDao">
+	
+	<!-- 状态对象 -->
+	<resultMap id="StateModel" type="com.cn.adonis.model.state.StateModel">
+	   	<result column="code" property="code" jdbcType="INTEGER" />
+	   	<result column="msg" property="msg" jdbcType="VARCHAR" />
+		<result column="keyID" property="keyId" jdbcType="BIGINT" />
+	   	<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 文件类型对象 -->
+	<resultMap id="FileType" type="com.cn.adonis.entity.file.FileType">
+		<id column="typeID" property="typeId" jdbcType="BIGINT" />
+		<result column="typeKey" property="typeKey" jdbcType="VARCHAR" />
+		<result column="typeName" property="typeName" jdbcType="VARCHAR" />
+		<result column="typeIcon" property="typeIcon" jdbcType="VARCHAR" />
+		<result column="typeIcong" property="typeIcong" jdbcType="VARCHAR" />
+	   	<result column="browseMode" property="browseMode" jdbcType="INTEGER" />
+	</resultMap>
+	
+	
+	<!-- 获取文件夹对象 -->
+	<select id="fainByFolder" resultMap="FileType">
+		{
+			call p_file_type_fainByFolder()
+		}
+	</select>
+	
+	
+</mapper>

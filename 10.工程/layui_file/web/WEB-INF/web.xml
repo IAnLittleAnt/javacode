@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	
+	<!-- 加载顺序为：context-param -> listener -> filter -> servlet -->
+	
+	<!-- 定义了WEB应用的名字 -->
+	<display-name>layui_file</display-name>
+	
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/spring-mybatis.xml</param-value>
+	</context-param>
+	
+	
+	<!-- 设置由Sprng载入的Log4j配置文件位置 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j/log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>layui_file.root</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<servlet>
+		<servlet-name>SpringMVC</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- 定時器 -->
+  	<!-- <servlet>
+        <servlet-name>QuartzInitializer</servlet-name>
+        <display-name>Quartz Initializer Servlet</display-name>
+        <servlet-class>
+             org.quartz.ee.servlet.QuartzInitializerServlet
+        </servlet-class>
+        <load-on-startup>5</load-on-startup>
+        <init-param>
+            <param-name>config-file</param-name>
+            <param-value>/quartz/quartz.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>shutdown-on-unload</param-name>
+            <param-value>true</param-value>
+       </init-param>
+    </servlet> -->
+	
+	
+	<!-- 指定欢迎文件页配置 -->
+	<welcome-file-list>
+		<welcome-file>/layui_file/main/login</welcome-file>
+	</welcome-file-list>
+	
+	
+	<!-- 配置错误页面 -->
+	<error-page>
+		<!-- 通过错误码来配置 -->
+		<error-code>404</error-code>
+		<location>/main/404</location>
+	</error-page>
+	<error-page>
+		<!-- 通过错误码来配置 -->
+		<error-code>500</error-code>
+		<location>/main/500</location>
+	</error-page>
+	<error-page>
+		<!-- 通过异常的类型配置 -->
+   		<exception-type>java.lang.NullPointerException</exception-type>
+   		<location>/main/404</location>
+	</error-page>
+	
+	
+	<!-- 添加自定义session监听器 -->
+	<listener>
+		<listener-class>com.cn.unit.spring.MySessionListener</listener-class>
+	</listener>
+	<!-- <listener>
+		<listener-class>com.cn.unit.spring.LoginSessionListener</listener-class>
+	</listener> -->
+	<!-- SESSION有效时间(720分钟) -->
+	<session-config>
+		<session-timeout>720</session-timeout>
+	</session-config>
+	
+</web-app>
